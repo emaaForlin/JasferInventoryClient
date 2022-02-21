@@ -32,8 +32,12 @@
                     <div class="mb-3"><label class="form-label" for="prod-description">Descripción del articulo</label><textarea class="form-control" id="prod-description" placeholder="Ej. Talle M; Perchero central" name="prod-description"></textarea></div>
                     <div class="mb-3">
                         <div class="row">
-                            <div class="col-md-6"><label class="form-label" for="prod-price">Precio</label><input class="form-control" type="text" name="prod-price" placeholder="$"></div>
-                            <div class="col-md-6 button"><button class="btn btn-primary d-block w-100" type="submit">CONFIRMAR</button></div>
+                            <div class="col-md-6"><label class="form-label" for="prod-sku">Codigo</label><input class="form-control" minlength="1" maxlength="8" type="text" value="{{.SKU}}" id="prod-sku" name="prod-sku" placeholder="{{.SKU}}"></div>
+                            <div class="col-md-6"><label class="form-label" for="prod-price">Precio</label><input class="form-control" type="number" name="prod-price" step="0.01" value="{{.Price}}" placeholder="${{.Price}}"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 button"><button class="btn btn-secondary d-block w-100" onclick="window.close()">Terminar</button></div>
+                            <div class="col-md-6 button"><button class="btn btn-primary d-block w-100" type="submit" autofocus>AGREGAR</button></div>
                         </div>
                     </div>
                 </form>

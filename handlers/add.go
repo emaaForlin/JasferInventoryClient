@@ -20,11 +20,14 @@ func (cl *Client) AddPost(c *gin.Context) {
 		Name:        c.PostFormArray("prod-name")[0],
 		Description: c.PostFormArray("prod-description")[0],
 		Price:       float32(pPrice),
-		//SKU:         c.PostFormArray("prod-sku")[0],
+		SKU:         c.PostFormArray("prod-sku")[0],
 	}
 	cl.l.Printf("Adding %#v", p)
 	status, err := client.AddProduct(cl.addr, p)
-	cl.l.Println(status, err)
-	cl.l.Println("Add page")
-	c.HTML(http.StatusOK, "add.html", nil)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
+	if status == http.StatusOK {
+		c.Redirect(http.StatusMovedPermanently, "/")
+	}
 }

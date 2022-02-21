@@ -8,14 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Form struct {
+	Id []string `form:"delete[]"`
+}
+
 func (cl *Client) DeleteProduct(c *gin.Context) {
 	strId := c.Param("id")
 	id, err := strconv.Atoi(strId)
 	if err != nil {
-		http.Error(c.Writer, "ID must to be an integer", http.StatusBadRequest)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
 	}
-	_, err = client.DeleteProduct(cl.addr, id)
+	status, err := client.DeleteProduct(cl.addr, id)
 	if err != nil {
-		http.Error(c.Writer, "Something was wrong, maybe this ID does not exists", http.StatusBadRequest)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	if status == http.StatusOK {
+		c.Redirect(http.StatusMovedPermanently, "/")
 	}
 }

@@ -15,6 +15,9 @@ func (cl *Client) EditGet(c *gin.Context) {
 		http.Error(c.Writer, "ID must to be an integer", http.StatusBadRequest)
 	}
 	data, err := client.GetOneProduct(cl.addr, id)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
 	c.HTML(http.StatusOK, "update.html", gin.H{
 		"data": data,
 	})
@@ -31,6 +34,11 @@ func (cl *Client) EditPost(c *gin.Context) {
 		Price:       float32(pPrice),
 		SKU:         c.PostFormArray("prod-sku")[0],
 	}
-	client.UpdateProduct(cl.addr, id, p)
-	c.HTML(http.StatusOK, "updating.html", nil)
+	status, err := client.UpdateProduct(cl.addr, id, p)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
+	if status == http.StatusOK {
+		c.Redirect(http.StatusMovedPermanently, "/")
+	}
 }

@@ -33,6 +33,7 @@ func main() {
 
 	router.POST("/add", client.AddPost)
 	router.POST("/edit/:id", client.EditPost)
+	router.POST("/delete/:id", client.DeleteProduct)
 
 	// all the stuff needed to start serving the page are down here
 	// setting up http server
