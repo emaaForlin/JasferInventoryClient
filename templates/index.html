@@ -25,7 +25,8 @@
             <div class="container"><a class="navbar-brand" href="#">Jasfer inventory software</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="/add" style="color: var(--bs-white);">Agregar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/add" style="color: var(--bs-white);margin-right: 10px;">Agregar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/config" style="color: var(--bs-white);margin-right: 10px;">Configuración</a></li>
                     </ul>
                     <form class="me-auto search-form" target="_self">
                         <div class="d-flex align-items-center">   
@@ -59,7 +60,7 @@
                         <td>{{.Description}}</td>
                         <td>{{.SKU}}</td>
                         <td>${{.Price}}</td>
-                        <td><form method="get" action="/edit/{{.ID}}" target="_blank"><button>Editar</button></form></td>
+                        <td><form method="get" action="/edit/{{.ID}}"><button>Editar</button></form></td>
                         <td><form method="post" action="/delete/{{.ID}}"><button>Eliminar</button></form></td>
                 </tr>
                 {{ end }}

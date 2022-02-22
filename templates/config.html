@@ -25,19 +25,17 @@
         <section class="portfolio-block hire-me">
             <div class="container">
                 <div class="heading">
-                    <h2>Agregar productos</h2>
+                    <h2>Configuración</h2>
                 </div>
-                <form action="/add" method="POST">
-                    <div class="mb-3"><label class="form-label" for="prod-name">Nombre del articulo</label><input class="form-control" type="text" id="prod-name" name="prod-name" placeholder="Ej. Remera musculosa" required></div>
-                    <div class="mb-3"><label class="form-label" for="prod-description">Descripción del articulo</label><textarea class="form-control" id="prod-description" placeholder="Ej. Talle M; Perchero central" name="prod-description"></textarea></div>
-                    <div class="mb-3">
-                        <div class="row">
-                            <div class="col-md-6"><label class="form-label" for="prod-sku">Codigo</label><input class="form-control" minlength="1" maxlength="8" type="text" id="prod-sku" name="prod-sku" placeholder="{{.SKU}}" required></div>
-                            <div class="col-md-6"><label class="form-label" for="prod-price">Precio</label><input class="form-control" type="number" name="prod-price" step="0.01" placeholder="$" required></div>
-                        </div>
-                        <div class="col button"><button class="btn btn-primary d-block w-100 align" type="submit">AGREGAR</button></div>
+                <form action="/config" method="POST">
+                    <div class="mb-3"><label class="form-label" for="mensual-percentile" style="font-weight: bold;">Actualizacion mensual en %</label><input class="form-control" type="number" name="mensual-percentile" step="0.5" min="-100" max="100" placeholder="Mensual: % {{.data.MensualPerc}}" required></div>
+                    <p>Podes usar cualquier numero entre <b>-100</b> y <b>100</b> para actualizar los precios.</p>
+                    <p>Si usas numeros negativos (Ej. -5), el precio se reducira un 5% mensualmente o por unica vez, dependiendo si se uso el boton <b>Guardar</b> o <b>Actualizar ahora</b></p>
+                    <div class="row">
+                        <div class="col button"><button class="btn btn-secondary d-block w-100 align" type="submit" formaction="/config/updnow" style="font-weight: bold;">Actualizar Ahora</button></div>
+                        <div class="col button"><button class="btn btn-primary d-block w-100 align" type="submit" style="font-weight: bold;">Guardar</button></div>
+                        <a href="/" class=" btn btn-secondary d-block w-100 align" style="margin-top: 10px;">Volver atras</a>
                     </div>
-                    <a href="/" class=" btn btn-secondary d-block w-100 align">Volver atras</a>
                 </form>
             </div>
         </section>

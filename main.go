@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/emaaForlin/JasferInventoryClient/handlers"
@@ -24,16 +25,21 @@ func main() {
 	//router.LoadHTMLFiles("./templates/index.html", "./templates/add.html", "./templates/update.html")
 	router.Static("assets/", "./templates/assets")
 	router.Static("edit/assets", "./templates/assets")
+	router.Static("config/assets", "./templates/assets")
 
 	// Route the pages
 	router.GET("/", client.Index)
 	router.GET("/add", client.Add)
+	router.GET("/config", client.ConfigPage)
+
 	router.GET("/edit/:id", client.EditGet)
 	router.GET("/delete/:id", client.DeleteProduct)
 
 	router.POST("/add", client.AddPost)
 	router.POST("/edit/:id", client.EditPost)
 	router.POST("/delete/:id", client.DeleteProduct)
+	router.POST("/config", client.Config)
+	router.POST("/config/updnow", client.UpdNow)
 
 	// all the stuff needed to start serving the page are down here
 	// setting up http server
@@ -47,21 +53,31 @@ func main() {
 	}
 
 	go func() {
-		err := s.ListenAndServe()
-		l.Printf("Server listening on %s", s.Addr)
-
-		if err != nil {
-			l.Fatal(err)
+		// service connections
+		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
 		}
 	}()
 
-	sigChan := make(chan os.Signal)
-	signal.Notify(sigChan, os.Interrupt)
-	signal.Notify(sigChan, os.Kill)
+	// Wait for interrupt signal to gracefully shutdown the server with
+	// a timeout of 5 seconds.
+	quit := make(chan os.Signal)
+	// kill (no param) default send syscanll.SIGTERM
+	// kill -2 is syscall.SIGINT
+	// kill -9 is syscall. SIGKILL but can't be catch, so don't need add it
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutdown Server ...")
 
-	sig := <-sigChan
-	l.Println("Received terminate, graceful shutdown", sig)
-
-	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	s.Shutdown(tc)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := s.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	// catching ctx.Done(). timeout of 5 seconds.
+	select {
+	case <-ctx.Done():
+		log.Println("timeout of 5 seconds.")
+	}
+	log.Println("Server exiting")
 }

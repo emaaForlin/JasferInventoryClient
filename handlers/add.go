@@ -28,6 +28,7 @@ func (cl *Client) AddPost(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
 	if status == http.StatusOK {
-		c.Redirect(http.StatusMovedPermanently, "/")
+		c.Redirect(http.StatusMovedPermanently, "/add")
 	}
+
 }
