@@ -29,14 +29,18 @@
                 </div>
                 <form action="/config" method="POST">
                     <div class="mb-3"><label class="form-label" for="mensual-percentile" style="font-weight: bold;">Actualizacion mensual en %</label><input class="form-control" type="number" name="mensual-percentile" step="0.5" min="-100" max="100" placeholder="Mensual: % {{.data.MensualPerc}}" required></div>
-                    <p>Podes usar cualquier numero entre <b>-100</b> y <b>100</b> para actualizar los precios.</p>
+                    <p>Podes usar cualquier numero entre <b>(-100</b> y <b>100)</b> para actualizar los precios.</p>
                     <p>Si usas numeros negativos (Ej. -5), el precio se reducira un 5% mensualmente o por unica vez, dependiendo si se uso el boton <b>Guardar</b> o <b>Actualizar ahora</b></p>
                     <div class="row">
                         <div class="col button"><button class="btn btn-secondary d-block w-100 align" type="submit" formaction="/config/updnow" style="font-weight: bold;">Actualizar Ahora</button></div>
                         <div class="col button"><button class="btn btn-primary d-block w-100 align" type="submit" style="font-weight: bold;">Guardar</button></div>
                         <a href="/" class=" btn btn-secondary d-block w-100 align" style="margin-top: 10px;">Volver atras</a>
                     </div>
+                    <div class="container" style="margin-top: 10px; text-align: justify;">
+                        <p><b>IMPORTANTE:</b> El boton <b>Actualizar Ahora</b> actualizará todos los precios automaticamente. Usarlo cuidadosamente.</p>
+                    </div>
                 </form>
+                  
             </div>
         </section>
     </main>

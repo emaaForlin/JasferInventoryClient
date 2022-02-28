@@ -29,10 +29,10 @@
                 </div>
                 <form action="/add" method="POST">
                     <div class="mb-3"><label class="form-label" for="prod-name">Nombre del articulo</label><input class="form-control" type="text" id="prod-name" name="prod-name" placeholder="Ej. Remera musculosa" required></div>
-                    <div class="mb-3"><label class="form-label" for="prod-description">Descripción del articulo</label><textarea class="form-control" id="prod-description" placeholder="Ej. Talle M; Perchero central" name="prod-description"></textarea></div>
+                    <div class="mb-3"><label class="form-label" for="prod-description">Descripción del articulo</label><textarea class="form-control" id="prod-description" placeholder="Ej. Talle S; Manga corta" name="prod-description"></textarea></div>
                     <div class="mb-3">
                         <div class="row">
-                            <div class="col-md-6"><label class="form-label" for="prod-sku">Codigo</label><input class="form-control" minlength="1" maxlength="8" type="text" id="prod-sku" name="prod-sku" placeholder="{{.SKU}}" required></div>
+                            <div class="col-md-6"><label class="form-label" for="prod-sku">Codigo</label><input class="form-control" minlength="1" maxlength="8" type="text" id="prod-sku" name="prod-sku" placeholder="AA1234BB" required></div>
                             <div class="col-md-6"><label class="form-label" for="prod-price">Precio</label><input class="form-control" type="number" name="prod-price" step="0.01" placeholder="$" required></div>
                         </div>
                         <div class="col button"><button class="btn btn-primary d-block w-100 align" type="submit">AGREGAR</button></div>
