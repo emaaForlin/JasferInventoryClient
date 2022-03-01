@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	MensualPerc float32 `json: "mensual_perc"`
+	MensualPerc      float32 `json: "MensualPerc"`
+	UpdatedThisMonth bool    `json:	"UpdatedThisMonth"`
 }
 
 func WriteConfig(c Config) {
@@ -25,10 +26,15 @@ func ReadConfig() (Config, error) {
 	return conf, nil
 }
 
-func IsFirstDayOfMonth() bool {
+func IsDayOfMonth(d int) bool {
 	day := time.Now().Day()
-	if day == 1 || day == 01 {
-		return true
+	return day == d
+}
+
+func IsOneOfThisDays(days []int) (bool, int) {
+	day := time.Now().Day()
+	for i, d := range days {
+		return d == day, days[i]
 	}
-	return false
+	return false, -1
 }

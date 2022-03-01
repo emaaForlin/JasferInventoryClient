@@ -13,10 +13,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
+var version string = "dev"
 
-	client := handlers.NewClient(l, "http://localhost:9090/products")
+func main() {
+	gin.SetMode(gin.ReleaseMode)
+	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
+	l.Println(version)
+	addressAndPath := os.Getenv("SRV_ADDR")
+	client := handlers.NewClient(l, addressAndPath)
 
 	router := gin.Default()
 
@@ -61,7 +65,7 @@ func main() {
 
 	// Wait for interrupt signal to gracefully shutdown the server with
 	// a timeout of 5 seconds.
-	quit := make(chan os.Signal)
+	quit := make(chan os.Signal, 1)
 	// kill (no param) default send syscanll.SIGTERM
 	// kill -2 is syscall.SIGINT
 	// kill -9 is syscall. SIGKILL but can't be catch, so don't need add it
@@ -75,9 +79,7 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	// catching ctx.Done(). timeout of 5 seconds.
-	select {
-	case <-ctx.Done():
-		log.Println("timeout of 5 seconds.")
-	}
+	<-ctx.Done()
+	log.Println("timeout of 5 seconds.")
 	log.Println("Server exiting")
 }
