@@ -11,22 +11,27 @@ import (
 
 	"github.com/emaaForlin/JasferInventoryClient/handlers"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 var version string = "dev"
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
-	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
+	l := log.New(os.Stdout, "JIClient: ", log.LstdFlags)
 	l.Println(version)
+
+	err := godotenv.Load()
+	if err != nil {
+		l.Printf("Error loading .env %q", err)
+	}
 	addressAndPath := os.Getenv("SRV_ADDR")
-	client := handlers.NewClient(l, addressAndPath)
+	apikey := os.Getenv("APIKEY")
+	client := handlers.NewClient(l, addressAndPath, apikey)
 
 	router := gin.Default()
-
 	// Load pages and it assests
 	router.LoadHTMLGlob("./templates/*.html")
-	//router.LoadHTMLFiles("./templates/index.html", "./templates/add.html", "./templates/update.html")
 	router.Static("assets/", "./templates/assets")
 	router.Static("edit/assets", "./templates/assets")
 	router.Static("config/assets", "./templates/assets")
@@ -36,7 +41,7 @@ func main() {
 	router.GET("/add", client.Add)
 	router.GET("/config", client.ConfigPage)
 
-	router.GET("/edit/:id", client.EditGet)
+	router.GET("/edit/:id", client.EditPage)
 	router.GET("/delete/:id", client.DeleteProduct)
 
 	router.POST("/add", client.AddPost)

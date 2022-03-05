@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func UpdateProduct(addr string, id int, p Product) (int, error) {
+func UpdateProduct(addr string, id int, p Product, apikey string) (int, error) {
 	p.ID = id
 	jsonBlob, err := json.Marshal(p)
 	if err != nil {
@@ -20,7 +20,7 @@ func UpdateProduct(addr string, id int, p Product) (int, error) {
 	}
 
 	req.Header.Set("Content-Type", "Application/json; charset=utf-8")
-
+	req.Header.Set("apikey", apikey)
 	res, err := httpClient.Do(req)
 	if err != nil {
 		return res.StatusCode, err

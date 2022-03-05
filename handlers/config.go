@@ -38,7 +38,7 @@ func (cl *Client) Config(c *gin.Context) {
 
 func (cl *Client) UpdNow(c *gin.Context) {
 	mPercentil, _ := strconv.ParseFloat(c.PostFormArray("mensual-percentile")[0], 64)
-	data, err := client.GetProducts(cl.addr)
+	data, err := client.GetProducts(cl.addr, cl.apikey)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
@@ -46,7 +46,7 @@ func (cl *Client) UpdNow(c *gin.Context) {
 		cl.l.Printf("Updating price of product %s\nActual price: %f\n", d.Name, d.Price)
 		d.Price = float32(math.Round(float64(d.Price) + float64(d.Price*float32(mPercentil/100))))
 		cl.l.Printf("New price: %f\n", d.Price)
-		client.UpdateProduct(cl.addr, d.ID, d)
+		client.UpdateProduct(cl.addr, d.ID, d, cl.apikey)
 	}
 	c.Redirect(http.StatusMovedPermanently, "/config")
 }

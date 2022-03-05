@@ -23,7 +23,7 @@ func (cl *Client) AddPost(c *gin.Context) {
 		SKU:         c.PostFormArray("prod-sku")[0],
 	}
 	cl.l.Printf("Adding %#v", p)
-	status, err := client.AddProduct(cl.addr, p)
+	status, err := client.AddProduct(cl.addr, p, cl.apikey)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}

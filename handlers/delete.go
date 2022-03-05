@@ -19,7 +19,7 @@ func (cl *Client) DeleteProduct(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	status, err := client.DeleteProduct(cl.addr, id)
+	status, err := client.DeleteProduct(cl.addr, id, cl.apikey)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return

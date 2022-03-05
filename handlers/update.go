@@ -8,13 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (cl *Client) EditGet(c *gin.Context) {
+func (cl *Client) EditPage(c *gin.Context) {
 	strId := c.Param("id")
 	id, err := strconv.Atoi(strId)
 	if err != nil {
 		http.Error(c.Writer, "ID must to be an integer", http.StatusBadRequest)
 	}
-	data, err := client.GetOneProduct(cl.addr, id)
+	data, err := client.GetOneProduct(cl.addr, id, cl.apikey)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
@@ -34,7 +34,7 @@ func (cl *Client) EditPost(c *gin.Context) {
 		Price:       float32(pPrice),
 		SKU:         c.PostFormArray("prod-sku")[0],
 	}
-	status, err := client.UpdateProduct(cl.addr, id, p)
+	status, err := client.UpdateProduct(cl.addr, id, p, cl.apikey)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}

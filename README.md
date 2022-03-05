@@ -1,8 +1,12 @@
 # Jasfer Inventory Software
 
-### Changelog
+### How to use it
+Required env vars
+- `SRV_ADDR` this must to be address of the server api and the path. For example `SRV_ADDR=http://192.168.0.10/products`
+- `APIKEY` the key required for to connect the client with the server, it is `APIKEY=user:pass`. Must to be in the `authorized_users` table in the database.
 
-#### What it can do
+### Changelog
+- Added api authentication
 - Show the products in the index page
 - Add products
 - Edit products

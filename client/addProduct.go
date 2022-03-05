@@ -6,14 +6,17 @@ import (
 	"net/http"
 )
 
-func AddProduct(addr string, prod Product) (int, error) {
+func AddProduct(addr string, prod Product, apikey string) (int, error) {
 	postBody, _ := json.Marshal(prod)
-
 	resBody := bytes.NewBuffer(postBody)
-	res, err := http.Post(addr, "application/json", resBody)
+	req, err := http.NewRequest(http.MethodPost, addr, resBody)
+	req.Header.Set("apikey", apikey)
 	if err != nil {
-		return res.StatusCode, err
+		return 0, nil
 	}
-	defer res.Body.Close()
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return 0, err
+	}
 	return res.StatusCode, nil
 }

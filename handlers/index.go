@@ -11,9 +11,8 @@ import (
 
 func (cl *Client) Index(c *gin.Context) {
 	cl.l.Println("Index page")
-
 	// get the products
-	data, err := client.GetProducts(cl.addr)
+	data, err := client.GetProducts(cl.addr, cl.apikey)
 	if err != nil {
 		http.Error(c.Writer, "Error getting products", http.StatusInternalServerError)
 	}
@@ -30,7 +29,7 @@ func (cl *Client) Index(c *gin.Context) {
 			cl.l.Printf("[INFO] Updating price of product %s\nActual price: %f\n", d.Name, d.Price)
 			d.Price = float32(math.Round(float64(d.Price + (d.Price * conf.MensualPerc))))
 			cl.l.Printf("[INFO] New price: %f\n", d.Price)
-			client.UpdateProduct(cl.addr, d.ID, d)
+			client.UpdateProduct(cl.addr, d.ID, d, cl.apikey)
 		}
 		conf.UpdatedThisMonth = true
 		conf.MensualPerc = conf.MensualPerc
@@ -51,7 +50,7 @@ func (cl *Client) Index(c *gin.Context) {
 	}
 
 	// update the data to show it
-	data, err = client.GetProducts(cl.addr)
+	data, err = client.GetProducts(cl.addr, cl.apikey)
 	if err != nil {
 		http.Error(c.Writer, "Error getting products", http.StatusInternalServerError)
 	}

@@ -8,13 +8,17 @@ import (
 	"net/http"
 )
 
-func GetOneProduct(addr string, id int) ([]Product, error) {
+func GetOneProduct(addr string, id int, apikey string) ([]Product, error) {
 	var prods []Product
-	res, err := http.Get(fmt.Sprintf("%s/%d", addr, id))
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%d", addr, id), nil)
+	req.Header.Set("apikey", apikey)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	defer res.Body.Close()
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
 
 	jsonBlob, err := ioutil.ReadAll(res.Body)
 	if err != nil {
